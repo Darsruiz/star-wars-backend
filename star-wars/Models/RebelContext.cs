@@ -14,6 +14,6 @@ namespace star_wars.Models
             Database.EnsureCreated();
         }
 
-        public DbSet<Rebel> Rebels { get; }
+        public DbSet<Rebel> Rebels { get; set; }
     }
 }

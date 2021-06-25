@@ -11,9 +11,14 @@ namespace star_wars
 {
     public class Program
     {
-        public static void Main(string[] args)
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+            log.Info("Hello logging world!");
+            Console.WriteLine("Hit enter");
+            Console.ReadLine();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -16,12 +16,14 @@ namespace star_wars.Repositories
             _context = context;
         }
 
-        public async Task Kill(string name)
+        public async Task<Rebel> Create(Rebel rebel)
         {
-            var killRebel = await _context.Rebels.FindAsync(name);
-            _context.Rebels.Remove(killRebel);
+            _context.Rebels.Add(rebel);
             await _context.SaveChangesAsync();
+
+            return rebel;
         }
+
         public async Task<IEnumerable<Rebel>> Get()
         {
             return await _context.Rebels.ToListAsync();
@@ -37,10 +39,18 @@ namespace star_wars.Repositories
             return await _context.Rebels.FindAsync(planet);
         }
 
+        public async Task Kill(string name)
+        {
+            var killRebel = await _context.Rebels.FindAsync(name);
+            _context.Rebels.Remove(killRebel);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task Update(Rebel rebel)
         {
             _context.Entry(rebel).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }
+
 }

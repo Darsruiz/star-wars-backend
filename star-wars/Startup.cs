@@ -1,4 +1,5 @@
 using star_wars.Models;
+using star_wars.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace star_wars
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IRebelRepository, RebelRepository>();
             services.AddDbContext<RebelContext>(o => o.UseSqlite("Data source=rebels.db"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -37,8 +39,12 @@ namespace star_wars
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            var loggingOptions = this.Configuration.GetSection("Log4NetCore")
+                                               .Get<Log4NetProviderOptions>();
+            loggerFactory.AddLog4Net(loggingOptions);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

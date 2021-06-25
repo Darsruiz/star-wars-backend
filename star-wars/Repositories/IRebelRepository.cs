@@ -14,6 +14,7 @@ namespace star_wars.Repositories
         Task<Rebel> GetPlanet(string planet);
         Task Update(Rebel rebel);
 
+        Task<Rebel> Create(Rebel rebel);
         Task Kill(string name);
     }
 }
