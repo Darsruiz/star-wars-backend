@@ -30,15 +30,38 @@ namespace star_wars.Controllers
 
         public async Task<ActionResult<Rebel>> GetRebels(string name)
         {
+
             return await _rebelRepository.GetName(name);
         }
 
         [HttpPost]
         public async Task<ActionResult<Rebel>>PostRebels([FromBody] Rebel rebel)
         {
-            Rebel killRebel = await _rebelRepository.Create(rebel);
-            return CreatedAtAction(nameof(GetRebels), new { name = killRebel.Name }, killRebel);
+            Rebel addRebel = await _rebelRepository.Create(rebel);
+            return CreatedAtAction(nameof(GetRebels), new { name = addRebel.Name }, addRebel);
         }
 
+        [HttpPut]
+        public async Task<ActionResult> UpdateRebel(string name, [FromBody] Rebel rebel)
+        {
+            if(name != rebel.Name)
+            {
+                return BadRequest();
+            }
+            await _rebelRepository.Update(rebel);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{name}")]
+        public async Task<ActionResult> Kill(string name)
+        {
+            var rebelToKill = await _rebelRepository.GetName(name);
+            if (rebelToKill == null)
+                return NotFound();
+            await _rebelRepository.Kill(rebelToKill.Name);
+            return NoContent();
+
+        }
     }
 }

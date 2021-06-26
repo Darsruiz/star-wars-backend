@@ -34,16 +34,12 @@ namespace star_wars.Repositories
             return await _context.Rebels.FindAsync(name);
         }
 
-        public async Task<Rebel> GetPlanet(string planet)
-        {
-            return await _context.Rebels.FindAsync(planet);
-        }
-
         public async Task Kill(string name)
         {
-            var killRebel = await _context.Rebels.FindAsync(name);
-            _context.Rebels.Remove(killRebel);
+            var rebelToKill = await _context.Rebels.FindAsync(name);
+            _context.Rebels.Remove(rebelToKill);
             await _context.SaveChangesAsync();
+            
         }
 
         public async Task Update(Rebel rebel)

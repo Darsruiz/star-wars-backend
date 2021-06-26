@@ -12,5 +12,7 @@ namespace star_wars.Models
         public string Name { get; set; }
         public string Planet { get; set; }
 
+        public DateTime Datetime { get; set; }
+
     }
 }
