@@ -30,7 +30,7 @@ namespace star_wars
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRebelRepository, RebelRepository>();
-            services.AddDbContext<RebelContext>(o => o.UseSqlite("Data source=rebels.db"));
+            services.AddDbContext<RebelContext>(options => options.UseSqlite("Data source=rebels.db"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

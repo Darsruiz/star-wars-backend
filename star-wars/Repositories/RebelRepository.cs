@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace star_wars.Repositories
 {
@@ -24,6 +25,23 @@ namespace star_wars.Repositories
                 Console.WriteLine("Exception caught: Couldn't create _context");
             }
             
+        }
+
+        public Task WriteToFile(Rebel rebel)
+        {
+            string rebelInfoFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string[] rebelInfo = { $"{ rebel.Name } at { rebel.Planet } on { rebel.Datetime }" };
+            try
+            {
+                File.AppendAllLines(Path.Combine(rebelInfoFilePath, "Rebels.txt"), rebelInfo);
+                return Task.CompletedTask;
+            }
+            catch
+            {
+                File.WriteAllText(Path.Combine(rebelInfoFilePath, "Rebels.txt"), rebelInfo[0]);
+                return Task.CompletedTask;
+            }
         }
 
         public async Task<Rebel> Create(Rebel rebel)
@@ -73,11 +91,13 @@ namespace star_wars.Repositories
 
         public async Task<Rebel> GetRebelOnPlanet(string name, string planet)
         {
+            
             try
             {
                 Rebel rebel = await _context.Rebels.FindAsync(name);
                 if (rebel != null && planet != null)
                 {
+                    await WriteToFile(rebel);
                     return rebel.Planet == planet ? rebel : null;
                 }
                 else
@@ -143,13 +163,10 @@ namespace star_wars.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                Console.WriteLine("Exception caught: Update() DbUpdateConcurrencyException");
-                foreach (var entry in ex.Entries)
-                {
-                    Debug.WriteLine("this entry" + entry);
-                }
+                Debug.WriteLine("Exception caught: Update() DbUpdateConcurrencyException");
+                throw new NotImplementedException();
             }
         }
     }
