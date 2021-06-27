@@ -11,6 +11,8 @@ namespace star_wars.Repositories
         Task<IEnumerable<Rebel>> Get();
 
         Task<Rebel> GetName(string name);
+
+        Task<Rebel> GetRebelOnPlanet(string name, string planet);
         Task<Rebel> Create(Rebel rebel);
         Task Update(Rebel rebel);
         Task Kill(string name);

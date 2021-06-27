@@ -34,6 +34,21 @@ namespace star_wars.Repositories
             return await _context.Rebels.FindAsync(name);
         }
 
+        public async Task<Rebel> GetRebelOnPlanet(string name, string planet)
+        {
+            Rebel rebel = await _context.Rebels.FindAsync(name);
+            if (rebel != null)
+            {
+                return rebel.Planet == planet ? rebel : null;
+            }
+            else
+            {
+                return null;
+            }
+                
+
+        }
+
         public async Task Kill(string name)
         {
             var rebelToKill = await _context.Rebels.FindAsync(name);

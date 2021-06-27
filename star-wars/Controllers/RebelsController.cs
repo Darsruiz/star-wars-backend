@@ -34,6 +34,12 @@ namespace star_wars.Controllers
             return await _rebelRepository.GetName(name);
         }
 
+        [HttpGet("{name}/{planet}")]
+        public async Task<ActionResult<Rebel>> GetRebelOnPlanet(string name, string planet)
+        {
+            return await _rebelRepository.GetRebelOnPlanet(name, planet);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Rebel>>PostRebels([FromBody] Rebel rebel)
         {
