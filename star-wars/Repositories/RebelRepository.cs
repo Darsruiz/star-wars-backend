@@ -62,11 +62,11 @@ namespace star_wars.Repositories
 
         public async Task<IEnumerable<Rebel>> Get()
         {
-            try 
-            { 
+            try
+            {
                 return await _context.Rebels.ToListAsync();
             }
-            catch (CustomException)
+            catch (ObjectNotFoundException)
             {
                 Console.WriteLine("Exception caught: Couldn't Get()");
                 return null;

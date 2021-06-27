@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace star_wars.Controllers
 {
@@ -14,7 +15,7 @@ namespace star_wars.Controllers
     public class RebelsController : ControllerBase
     {
         private readonly IRebelRepository _rebelRepository;
-        
+
         public RebelsController(IRebelRepository rebelRepository)
         {
             _rebelRepository = rebelRepository;
@@ -49,7 +50,7 @@ namespace star_wars.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateRebel(int id, [FromBody] Rebel rebel)
         {
-            if(id != rebel.Id)
+            if (id != rebel.Id)
             {
                 return BadRequest();
             }
@@ -64,10 +65,30 @@ namespace star_wars.Controllers
         {
             var rebelToKill = await _rebelRepository.GetName(name);
             if (rebelToKill == null)
+            {
                 return NotFound();
+            }
+
             await _rebelRepository.Kill(rebelToKill.Name);
             return StatusCode(200);
 
         }
+    }
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into HomeController");
+        }
+
+        public IActionResult Index()
+        {
+            _logger.LogInformation("Hello, this is the index!");
+            return View();
+        }
+
     }
 }

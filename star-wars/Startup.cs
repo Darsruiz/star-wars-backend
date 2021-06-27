@@ -41,9 +41,6 @@ namespace star_wars
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            var loggingOptions = this.Configuration.GetSection("Log4NetCore")
-                                               .Get<Log4NetProviderOptions>();
-            loggerFactory.AddLog4Net(loggingOptions);
 
             if (env.IsDevelopment())
             {
