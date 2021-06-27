@@ -50,7 +50,6 @@ namespace star_wars.Repositories
             try
             {
                 await _context.SaveChangesAsync();
-
                 return rebel;
             }
             catch (CustomException)
@@ -89,7 +88,7 @@ namespace star_wars.Repositories
             
         }
 
-        public async Task<Rebel> GetRebelOnPlanet(string name, string planet)
+        public async Task GetRebelOnPlanet(string name, string planet)
         {
             
             try
@@ -98,17 +97,11 @@ namespace star_wars.Repositories
                 if (rebel != null && planet != null)
                 {
                     await WriteToFile(rebel);
-                    return rebel.Planet == planet ? rebel : null;
-                }
-                else
-                {
-                    return null;
                 }
             }
             catch (CustomException)
             {
                 Console.WriteLine("Exception caught: GetRebelOnPlanet() Couldn't find rebel with name " + name);
-                return null;
             }
         }
 
@@ -122,21 +115,13 @@ namespace star_wars.Repositories
                     try
                     {
                         _context.Rebels.Remove(rebelToKill);
-                        try
-                        {
-                            await _context.SaveChangesAsync();
-                            return rebelToKill + "has been killed";
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Exception caught: Kill() Couldn't SaveChangesAsync");
-                            return "Exception caught: Kill() Couldn't SaveChangesAsync";
-                        }
+                        await _context.SaveChangesAsync();
+                        return $"Rebel {rebelToKill} has been Removed";
                     }
                     catch
                     {
-                        Console.WriteLine("Exception caught: Kill() Couldn't remove " + rebelToKill);
-                        return "Exception caught: Kill() Couldn't remove " + rebelToKill;
+                        Console.WriteLine("Exception caught: Kill() Couldn't SaveChangesAsync");
+                        return "Exception caught: Kill() Couldn't SaveChangesAsync";
                     }
                 }
                 else

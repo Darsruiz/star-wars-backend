@@ -34,16 +34,16 @@ namespace star_wars.Controllers
         }
 
         [HttpGet("{name}/{planet}")]
-        public async Task<ActionResult<Rebel>> GetRebelOnPlanet(string name, string planet)
+        public async Task GetRebelOnPlanet(string name, string planet)
         {
-            return await _rebelRepository.GetRebelOnPlanet(name, planet);
+            await _rebelRepository.GetRebelOnPlanet(name, planet);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Rebel>>PostRebels([FromBody] Rebel rebel)
+        public async Task<ActionResult<Rebel>> PostRebels([FromBody] Rebel rebel)
         {
-                Rebel addRebel = await _rebelRepository.Create(rebel);
-                return CreatedAtAction(nameof(GetRebels), new { name = addRebel.Name }, addRebel);
+            Rebel addRebel = await _rebelRepository.Create(rebel);
+            return CreatedAtAction(nameof(GetRebels), new { name = addRebel.Name }, addRebel);
         }
 
         [HttpPut]
