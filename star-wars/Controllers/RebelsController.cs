@@ -30,7 +30,6 @@ namespace star_wars.Controllers
 
         public async Task<ActionResult<Rebel>> GetRebels(string name)
         {
-
             return await _rebelRepository.GetName(name);
         }
 
@@ -43,17 +42,18 @@ namespace star_wars.Controllers
         [HttpPost]
         public async Task<ActionResult<Rebel>>PostRebels([FromBody] Rebel rebel)
         {
-            Rebel addRebel = await _rebelRepository.Create(rebel);
-            return CreatedAtAction(nameof(GetRebels), new { name = addRebel.Name }, addRebel);
+                Rebel addRebel = await _rebelRepository.Create(rebel);
+                return CreatedAtAction(nameof(GetRebels), new { name = addRebel.Name }, addRebel);
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateRebel(string name, [FromBody] Rebel rebel)
+        public async Task<ActionResult> UpdateRebel(int id, [FromBody] Rebel rebel)
         {
-            if(name != rebel.Name)
+            if(id != rebel.Id)
             {
                 return BadRequest();
             }
+
             await _rebelRepository.Update(rebel);
 
             return NoContent();
@@ -66,7 +66,7 @@ namespace star_wars.Controllers
             if (rebelToKill == null)
                 return NotFound();
             await _rebelRepository.Kill(rebelToKill.Name);
-            return NoContent();
+            return StatusCode(200);
 
         }
     }
