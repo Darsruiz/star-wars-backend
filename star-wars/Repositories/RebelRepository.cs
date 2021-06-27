@@ -12,6 +12,7 @@ namespace star_wars.Repositories
 {
     public class RebelRepository : IRebelRepository
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly RebelContext _context;
 
         public RebelRepository(RebelContext context)
@@ -20,9 +21,9 @@ namespace star_wars.Repositories
             {
                 _context = context;
             } 
-            catch (Exception)
+            catch
             {
-                Console.WriteLine("Exception caught: Couldn't create _context");
+                logger.Warn("Exception caught: Couldn't create _context");
             }
             
         }
@@ -54,7 +55,7 @@ namespace star_wars.Repositories
             }
             catch (CustomException)
             {
-                Console.WriteLine("Exception caught: Couldn't save changes");
+                logger.Warn("Exception caught: Couldn't save changes");
                 return null;
             }
             
@@ -68,7 +69,7 @@ namespace star_wars.Repositories
             }
             catch (ObjectNotFoundException)
             {
-                Console.WriteLine("Exception caught: Couldn't Get()");
+                logger.Warn("Exception caught: Couldn't Get()");
                 return null;
             }
             
@@ -82,7 +83,7 @@ namespace star_wars.Repositories
             }
             catch (CustomException)
             {
-                Console.WriteLine("Exception caught: Couldn't find name " + name);
+                logger.Warn("Exception caught: Couldn't find name " + name);
                 return null;
             }
             
@@ -101,7 +102,7 @@ namespace star_wars.Repositories
             }
             catch (CustomException)
             {
-                Console.WriteLine("Exception caught: GetRebelOnPlanet() Couldn't find rebel with name " + name);
+                logger.Warn("Exception caught: GetRebelOnPlanet() Couldn't find rebel with name " + name);
             }
         }
 
@@ -120,13 +121,13 @@ namespace star_wars.Repositories
                     }
                     catch
                     {
-                        Console.WriteLine("Exception caught: Kill() Couldn't SaveChangesAsync");
+                        logger.Warn("Exception caught: Kill() Couldn't SaveChangesAsync");
                         return "Exception caught: Kill() Couldn't SaveChangesAsync";
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Couldn't find " + name);
+                    logger.Info("Couldn't find " + name);
                     return "Couldn't find " + name;
                 }
                 
@@ -134,7 +135,7 @@ namespace star_wars.Repositories
             }
             catch
             {
-                Console.WriteLine("Exception caught: Kill() Couldn't find rebel with name " + name);
+                logger.Warn("Exception caught: Kill() Couldn't find rebel with name " + name);
                 return "Exception caught: Kill() Couldn't find rebel with name " + name;
             }
 
@@ -150,7 +151,7 @@ namespace star_wars.Repositories
             }
             catch (DbUpdateConcurrencyException)
             {
-                Debug.WriteLine("Exception caught: Update() DbUpdateConcurrencyException");
+                logger.Error("Exception caught: Update() DbUpdateConcurrencyException");
                 throw new NotImplementedException();
             }
         }

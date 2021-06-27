@@ -15,10 +15,17 @@ namespace star_wars.Controllers
     public class RebelsController : ControllerBase
     {
         private readonly IRebelRepository _rebelRepository;
+        private readonly ILogger<RebelsController> _logger;
 
         public RebelsController(IRebelRepository rebelRepository)
         {
             _rebelRepository = rebelRepository;
+        }
+
+        public RebelsController(ILogger<RebelsController> logger)
+        {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into RebelsController");
         }
 
         [HttpGet]
@@ -73,22 +80,5 @@ namespace star_wars.Controllers
             return StatusCode(200);
 
         }
-    }
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-            _logger.LogDebug(1, "NLog injected into HomeController");
-        }
-
-        public IActionResult Index()
-        {
-            _logger.LogInformation("Hello, this is the index!");
-            return View();
-        }
-
     }
 }
