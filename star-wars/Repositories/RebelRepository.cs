@@ -20,7 +20,7 @@ namespace star_wars.Repositories
             {
                 _context = context;
             } 
-            catch (CustomException)
+            catch (Exception)
             {
                 Console.WriteLine("Exception caught: Couldn't create _context");
             }
@@ -127,13 +127,13 @@ namespace star_wars.Repositories
                             await _context.SaveChangesAsync();
                             return rebelToKill + "has been killed";
                         }
-                        catch (CustomException)
+                        catch
                         {
                             Console.WriteLine("Exception caught: Kill() Couldn't SaveChangesAsync");
                             return "Exception caught: Kill() Couldn't SaveChangesAsync";
                         }
                     }
-                    catch (CustomException)
+                    catch
                     {
                         Console.WriteLine("Exception caught: Kill() Couldn't remove " + rebelToKill);
                         return "Exception caught: Kill() Couldn't remove " + rebelToKill;
@@ -147,7 +147,7 @@ namespace star_wars.Repositories
                 
                 
             }
-            catch (CustomException)
+            catch
             {
                 Console.WriteLine("Exception caught: Kill() Couldn't find rebel with name " + name);
                 return "Exception caught: Kill() Couldn't find rebel with name " + name;
